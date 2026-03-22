@@ -120,9 +120,13 @@
       }
     }
 
+    function handleTap(e) {
+      e.preventDefault(); // sprečava da se posle generiše click
+    }
+
     document.body.addEventListener('click', nextPage);
     document.body.addEventListener('wheel', nextPage);
-    document.body.addEventListener('touchstart', nextPage);
+    document.body.addEventListener('touchstart', handleTap, nextPage);
 
     // trik za Chrome: ukloni mute odmah kad se stranica učita
     window.addEventListener('load', () => {
@@ -133,7 +137,7 @@
       });
     });
 
-
+////////////////////////////
 
     let flagInterval;
 
