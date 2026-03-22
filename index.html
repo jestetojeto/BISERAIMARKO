@@ -92,10 +92,10 @@
 <body>
 
   <!-- Muzika: startuje odmah, prvo mutirana -->
-  <audio id="bgmusic" autoplay loop muted>
+  <!-- <audio id="bgmusic" autoplay loop muted>
     <source src="muzika.mp3" type="audio/mpeg">
-  </audio>
-
+  </audio> -->
+<audio id="muzika" src="muzika.mp3"></audio>
 
   <!-- Strane -->
   <div id="page1" class="page active">
@@ -113,10 +113,7 @@
     <p class = "tekst">Бисера и Марко<br>Бисера и Марко<br>Бисера и Марко<br>Бисера и Марко<br>Бисера и Марко<br>Бисера и Марко<br>Бисера и Марко<br></p>
     <p class="bottom-center">клик</p>
   </div>
-  <div id="page4" class="page">
-    <p>Strana 4</p>
-    <p>Klikni ili skroluj za povratak na stranu 1.</p>
-  </div>
+
 
   <script>
     let currentPage = 1;
@@ -147,50 +144,31 @@
     document.body.addEventListener('touchstart', handleTap, nextPage);
 
     // trik za Chrome: ukloni mute odmah kad se stranica učita
-    window.addEventListener('load', () => {
-      const audio = document.getElementById('bgmusic');
-      audio.muted = false;
-      audio.play().catch(() => {
-        // ako Chrome ipak blokira, zvuk će krenuti čim klikneš bilo gde
-      });
-    });
+    // window.addEventListener('load', () => {
+    //   const audio = document.getElementById('bgmusic');
+    //   audio.muted = false;
+    //   audio.play().catch(() => {
+    //     // ako Chrome ipak blokira, zvuk će krenuti čim klikneš bilo gde
+    //   });
+    // });
 
 ////////////////////////////
 
-    let flagInterval;
 
-    function startFlags() {
-      flagInterval = setInterval(() => {
-        const flag = document.createElement('img');
-        const flags = ['srbija.png', 'makedonija.png']; // tvoji fajlovi
-        flag.src = flags[Math.floor(Math.random() * flags.length)];
-        flag.className = 'flag';
+const muzika = document.getElementById('muzika');
 
-        // nasumična početna horizontalna pozicija
-        const startX = Math.random() * window.innerWidth;
-        flag.style.left = startX + 'px';
-        flag.style.bottom = '0px';
+function startSound() {
+  // pokušaj da pusti muziku
+  muzika.play().catch(err => {
+    console.log("Zvuk nije mogao da se pusti:", err);
+  });
 
-        // nasumičan horizontalni pomak tokom animacije (levo/desno)
-        const offsetX = (Math.random() * 400 - 200) + 'px';
-        flag.style.setProperty('--x', offsetX);
+  // ukloni listener da se ne ponavlja
+  document.body.removeEventListener('click', startSound);
+}
 
-        document.getElementById('page4').appendChild(flag);
-
-        // ukloni zastavu posle animacije
-        setTimeout(() => flag.remove(), 2000);
-      }, 250); // nova zastava na svake 0.25 sekunde
-    }
-
-    function stopFlags() {
-      clearInterval(flagInterval);
-      document.querySelectorAll('.flag').forEach(f => f.remove());
-    }
-
-
-
-
-
+// prvi klik bilo gde na stranici
+document.body.addEventListener('click', startSound);
 
   </script>
 
